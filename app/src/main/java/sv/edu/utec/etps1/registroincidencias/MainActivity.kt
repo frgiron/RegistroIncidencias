@@ -96,7 +96,7 @@ fun RegistroIncidenciasApp() {
                     esError = true
                 } else {
                     // Estado de éxito
-                    mensajeRetroalimentacion = "¡Reporte registrado exitosamente!"
+                    mensajeRetroalimentacion = "¡Reporte registrado exitosamente"
                     esError = false
 
                     titulo = ""
