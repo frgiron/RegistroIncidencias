@@ -1,7 +1,7 @@
 # RegistroIncidencias
 
 ## Propósito
-Esta aplicación es registrar y dar seguimiento a problemas de equipos, infraestructura o servicios.
+Con esta version de la aplicación es posible realizar el reporte colocando Titulo y breve descrcion
 
 ## Herramientas utilizadas
 Para este proyecto se utilizan las siguientes tecnologías:
@@ -11,7 +11,7 @@ GitHub
 
 ## Estado actual
 El proyecto se encuentra en su primera etapa de desarrollo. Actualmente ya funciona la configuración base del proyecto en Android Studio y la interfaz gráfica correspondiente al prototipo inicial.
-Queda pendiente implementar el comportamiento dinámico de los botones (lógica funcional) y la persistencia de datos para almacenar las incidencias de manera permanente.
+Se ha realizado la modificación correspondiente que permitre el ingreso de datos para los usuarios-
 
 ## Cómo abrir el proyecto
 Para revisar o ejecutar este proyecto en un entorno local.
