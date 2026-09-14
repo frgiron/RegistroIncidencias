@@ -22,6 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import sv.edu.utec.etps1.registroincidencias.ui.theme.RegistroIncidenciasTheme
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +66,7 @@ fun RegistroIncidenciasApp() {
             }
         }
         Spacer(modifier = Modifier.height(24.dp))
-        Button(onClick = { /* Se implementará en una unidad posterior */ }) {
+        Button(onClick = { /* Se implementará en una unidad posterior */  }) {
             Text(text = "Seguimiento")
         }
         Spacer(modifier = Modifier.height(12.dp))
@@ -76,5 +80,58 @@ fun RegistroIncidenciasApp() {
 fun RegistroIncidenciasPreview() {
     RegistroIncidenciasTheme {
         RegistroIncidenciasApp()
+    }
+}
+
+@Composable
+fun PantallaSeguimiento() {
+    // 1. Declarar los estados para el texto y el error
+    var textoSeguimiento by remember { mutableStateOf("") }
+    var mostrarError by remember { mutableStateOf(false) }
+
+    Column(modifier = Modifier.padding(16.dp)) {
+
+        // 2. Agregar el campo de texto
+        OutlinedTextField(
+            value = textoSeguimiento,
+            onValueChange = {
+                textoSeguimiento = it
+                mostrarError = false // Oculta el error en cuanto el usuario empieza a escribir
+            },
+            label = { Text("Ingresa el texto de seguimiento") },
+            isError = mostrarError, // Pinta el borde de rojo si hay error
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        // 3. Mostrar el mensaje de error debajo del campo si el estado es true
+        if (mostrarError) {
+            Text(
+                text = "Error: El texto es obligatorio para el seguimiento.",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // 4. Actualizar el botón de tu imagen con la lógica de validación
+        Button(
+            onClick = {
+                if (textoSeguimiento.trim().isEmpty()) {
+                    mostrarError = true // Activa el mensaje de error visual
+                } else {
+                    mostrarError = false
+
+                    println("Seguimiento registrado exitosamente.")
+                }
+            }
+        ) {
+            Text(text = "Seguimiento")
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(text = "Prototipo inicial — Unidad 1")
     }
 }
