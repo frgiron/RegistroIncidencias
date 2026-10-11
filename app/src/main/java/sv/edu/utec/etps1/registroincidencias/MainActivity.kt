@@ -58,7 +58,7 @@ fun RegistroIncidenciasApp() {
     var mensajeRetroalimentacion by remember { mutableStateOf("") }
     var esError by remember { mutableStateOf(false) }
 
-        Column(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp),
