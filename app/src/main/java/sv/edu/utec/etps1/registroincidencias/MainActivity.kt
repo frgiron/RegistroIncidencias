@@ -3,14 +3,20 @@ package sv.edu.utec.etps1.registroincidencias
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -22,6 +28,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import sv.edu.utec.etps1.registroincidencias.ui.theme.RegistroIncidenciasTheme
@@ -43,11 +51,14 @@ fun RegistroIncidenciasApp() {
     var titulo by remember { mutableStateOf("") }
     var descripcion by remember { mutableStateOf("") }
 
+    // Nuevo estado para la interacción táctil (Prioridad)
+    var prioridadSeleccionada by remember { mutableStateOf("Media") }
+
     // 2. Estados para la retroalimentación (mensaje y si es un error)
     var mensajeRetroalimentacion by remember { mutableStateOf("") }
     var esError by remember { mutableStateOf(false) }
 
-    Column(
+        Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp),
@@ -71,7 +82,11 @@ fun RegistroIncidenciasApp() {
             onValueChange = { titulo = it },
             label = { Text("Título del reporte") },
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Sentences,
+            imeAction = ImeAction.Next
+        )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -84,7 +99,46 @@ fun RegistroIncidenciasApp() {
             modifier = Modifier.fillMaxWidth(),
             minLines = 3 // Da la apariencia de un área de texto más amplia
         )
+ //-aqui
+        Spacer(modifier = Modifier.height(16.dp))
 
+        // Sección de Interacción Táctil Adicional: Selección de Prioridad[cite: 1]
+        Text(
+            text = "Selecciona la Prioridad:",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.align(Alignment.Start)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            val prioridades = listOf("Baja", "Media", "Alta")
+            prioridades.forEach { prioridad ->
+                Card(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 4.dp)
+                        .clickable { prioridadSeleccionada = prioridad }, // Interacción táctil de alto nivel[cite: 1]
+                    colors = CardDefaults.cardColors(
+                        containerColor = if (prioridadSeleccionada == prioridad)
+                            MaterialTheme.colorScheme.primaryContainer
+                        else
+                            MaterialTheme.colorScheme.surfaceVariant
+                    )
+                ) {
+                    Text(
+                        text = prioridad,
+                        modifier = Modifier
+                            .padding(vertical = 12.dp)
+                            .align(Alignment.CenterHorizontally),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+        }
+
+//-aqui
         Spacer(modifier = Modifier.height(24.dp))
 
         // 3. Botón principal con lógica de validación
