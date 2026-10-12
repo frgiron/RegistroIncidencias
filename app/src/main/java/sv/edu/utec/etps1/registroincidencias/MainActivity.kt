@@ -1,5 +1,6 @@
 package sv.edu.utec.etps1.registroincidencias
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,6 +34,15 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import sv.edu.utec.etps1.registroincidencias.ui.theme.RegistroIncidenciasTheme
+import kotlin.math.abs
+//Semana 11
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.platform.LocalContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +63,34 @@ fun RegistroIncidenciasApp() {
 
     // Nuevo estado para la interacción táctil (Prioridad)
     var prioridadSeleccionada by remember { mutableStateOf("Media") }
+
+    // Estados y configuración para el Acelerómetro - Semana 11
+    val context = LocalContext.current
+    val sensorManager = remember { context.getSystemService(Context.SENSOR_SERVICE) as SensorManager }
+    val accelerometer = remember { sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) }
+
+    var xVal by remember { mutableStateOf(0f) }
+    var yVal by remember { mutableStateOf(0f) }
+    var zVal by remember { mutableStateOf(0f) }
+
+    DisposableEffect(accelerometer) {
+        if (accelerometer != null) {
+            val listener = object : SensorEventListener {
+                override fun onSensorChanged(event: SensorEvent) {
+                    xVal = event.values[0]
+                    yVal = event.values[1]
+                    zVal = event.values[2]
+                }
+                override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+            }
+            sensorManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
+            onDispose {
+                sensorManager.unregisterListener(listener)
+            }
+        } else {
+            onDispose {}
+        }
+    }
 
     // 2. Estados para la retroalimentación (mensaje y si es un error)
     var mensajeRetroalimentacion by remember { mutableStateOf("") }
@@ -139,6 +177,42 @@ fun RegistroIncidenciasApp() {
         }
 
 //-aqui
+// Inicio Semana 11
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Sección de Monitoreo de Sensor (Acelerómetro - Semana 11)
+        Text(
+            text = "Sensor de Movimiento (Acelerómetro):",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.align(Alignment.Start)
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        ) {
+            Column(modifier = Modifier.padding(12.dp)) {
+                if (accelerometer == null) {
+                    Text(
+                        text = "El acelerómetro no está disponible en este dispositivo.",
+                        color = Color.Red,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                } else {
+                    Text(
+                        text = "X: ${String.format("%.2f", xVal)} | Y: ${String.format("%.2f", yVal)} | Z: ${String.format("%.2f", zVal)}",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        text = if (abs(zVal) > 9.0f) "Estado: Dispositivo estable" else "Estado: Dispositivo en movimiento / inclinado",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+        }
+        // Fin Semana 11
+
         Spacer(modifier = Modifier.height(24.dp))
 
         // 3. Botón principal con lógica de validación
