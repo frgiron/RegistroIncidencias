@@ -19,6 +19,7 @@ Semana 10: Teclado Contextual y Pantalla Táctil
 Semana 11: Integración de Sensores del Dispositivo
 * **Uso del acelerómetro:** Se integró la lectura en tiempo real del sensor de movimiento mediante SensorManager, SensorEventListener y un ciclo de vida gestionado por DisposableEffect para capturar los valores de los ejes X, Y y Z.
 * **Control de disponibilidad:** Se programó una validación defensiva (accelerometer == null) por si el emulador o dispositivo no cuenta con el sensor.
+* **Evaluacion del Sensor:** El Senron se probo rotanto la el dispositivo a pesar de tratarse un dispositivo en emulador.
 
 ## Cómo abrir el proyecto
 Para revisar o ejecutar este proyecto en un entorno local.
