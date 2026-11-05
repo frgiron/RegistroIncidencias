@@ -42,7 +42,10 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
+//Semana 14
 import android.util.Log
+//Semana 15
+import androidx.compose.runtime.saveable.rememberSaveable
 
 class MainActivity : ComponentActivity() {
     private val tag = "TPIS1_LIFECYCLE"
@@ -81,11 +84,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun RegistroIncidenciasApp() {
     // 1. Estados para capturar el texto del usuario
-    var titulo by remember { mutableStateOf("") }
-    var descripcion by remember { mutableStateOf("") }
+    var titulo by rememberSaveable { mutableStateOf("") }
+    var descripcion by rememberSaveable { mutableStateOf("") }
 
     // Nuevo estado para la interacción táctil (Prioridad)
-    var prioridadSeleccionada by remember { mutableStateOf("Media") }
+    var prioridadSeleccionada by rememberSaveable { mutableStateOf("Media") }
 
     // Estados y configuración para el Acelerómetro - Semana 11
     val context = LocalContext.current
