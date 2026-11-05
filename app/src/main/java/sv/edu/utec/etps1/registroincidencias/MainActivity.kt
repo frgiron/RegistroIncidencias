@@ -80,7 +80,6 @@ class MainActivity : ComponentActivity() {
         Log.d(tag, "onDestroy")
     }
 }
-
 @Composable
 fun RegistroIncidenciasApp() {
     // 1. Estados para capturar el texto del usuario
