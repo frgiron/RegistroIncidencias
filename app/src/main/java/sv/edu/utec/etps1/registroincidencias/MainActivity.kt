@@ -89,15 +89,15 @@ fun RegistroIncidenciasApp() {
 
     // Estados y configuración para el Acelerómetro - Semana 11
     val context = LocalContext.current
-    val sensorManager = remember { context.getSystemService(Context.SENSOR_SERVICE) as SensorManager }
-    val accelerometer = remember { sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) }
+    val sensorManager = remember { context.getSystemService(Context.SENSOR_SERVICE) as? SensorManager }
+    val accelerometer = remember { sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) }
 
     var xVal by remember { mutableStateOf(0f) }
     var yVal by remember { mutableStateOf(0f) }
     var zVal by remember { mutableStateOf(0f) }
 
-    DisposableEffect(accelerometer) {
-        if (accelerometer != null) {
+    DisposableEffect(sensorManager, accelerometer) {
+        if (sensorManager != null && accelerometer != null) {
             val listener = object : SensorEventListener {
                 override fun onSensorChanged(event: SensorEvent) {
                     xVal = event.values[0]
@@ -215,7 +215,7 @@ fun RegistroIncidenciasApp() {
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
         ) {
             Column(modifier = Modifier.padding(12.dp)) {
-                if (accelerometer == null) {
+                if (sensorManager == null || accelerometer == null) {
                     Text(
                         text = "El acelerómetro no está disponible en este dispositivo.",
                         color = Color.Red,
